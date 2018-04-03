@@ -6,6 +6,7 @@ const express = require('express');
 const pg = require('pg');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const superagent = require('superagent');
 
 //application setup
 
