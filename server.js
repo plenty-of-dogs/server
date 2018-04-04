@@ -11,7 +11,7 @@ const superagent = require('superagent');
 //application setup
 
 const app = express();
-const PORT = procss.env.PORT;
+const PORT = process.env.PORT || 3000;
 const CLIENT_URL = process.env.CLIENT_URL;
 const TOKEN = process.env.TOKEN;
 
@@ -24,6 +24,7 @@ const client = new pg.Client(process.env.DATABASE_URL);
 client.connect();
 client.on('error', err => console.error(err));
 
+
 //app middleware
 app.use(cors());
 app.use(express.json());
@@ -32,16 +33,17 @@ app.use(express.urlencoded({extended: true}));
 //API ENDPOINTS
 // app.get('/api endpoint', (req, res) => res.send(TOKEN === parseInt(req.query.token)))
 
-app.get('/api/v1/books', (req, res) => {
-  client.query(`SELECT book_id, title, author, image_url, isbn FROM books;`)
-    .then(results => res.send(results.rows))
-    .catch(console.error);
-});
-
 // superagent.get(url)
 //   .query({'q': query})
 //   .query({'key': API_KEY})
 //   .then(response => response.body.items.map(not sure what to map yet))
+
+//application middleware
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
+
+//api inputs
 
 
 //Add app.gets here with our API
