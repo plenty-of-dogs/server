@@ -13,12 +13,30 @@ const superagent = require('superagent');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const CLIENT_URL = process.env.CLIENT_URL;
+const TOKEN = process.env.TOKEN;
+
+//API key
+// const API_KEY = process.env.e71e981fb1330c9361d35b9f8a2bc4b3
 
 //Database setup
 
 const client = new pg.Client(process.env.DATABASE_URL);
 client.connect();
 client.on('error', err => console.error(err));
+
+
+//app middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
+//API ENDPOINTS
+// app.get('/api endpoint', (req, res) => res.send(TOKEN === parseInt(req.query.token)))
+
+// superagent.get(url)
+//   .query({'q': query})
+//   .query({'key': API_KEY})
+//   .then(response => response.body.items.map(not sure what to map yet))
 
 //application middleware
 app.use(cors());
@@ -27,7 +45,9 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 //api inputs
 
+
 //Add app.gets here with our API
+// for later
 //app.get()
 
 //botton of file
