@@ -11,24 +11,62 @@ const superagent = require('superagent');
 //application setup
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+// const PORT = process.env.PORT || 3000;
 const CLIENT_URL = process.env.CLIENT_URL;
 const TOKEN = process.env.TOKEN;
+const PORT = 3000;
 
 //API key
-// const API_KEY = process.env.e71e981fb1330c9361d35b9f8a2bc4b3
+// const API_KEY = process.env.e71e981fb1330c9361d35b9f8a2bc4b3;
 
 //Database setup
-
 const client = new pg.Client(process.env.DATABASE_URL);
 client.connect();
 client.on('error', err => console.error(err));
-
 
 //app middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
+// app.get('/github/*', (req, res) => {
+//   console.log('Routing a GitHub AJAX request for ', req.params[0]);
+//   const url = `https://api.github.com/${req.params[0]}`;
+//   superagent.get(url)
+//     .set(`Authorization`, `token ${process.env.GITHUB_TOKEN}`)
+//     .then(
+//       repos => {
+//         console.log(repos.text);
+//         res.send(repos.text)
+//       },
+//       err => res.send(err)
+//     )
+// })
+app.post('/api/v1/users', (req, res) => {
+  console.log(req.user)
+  client.query(
+    `INSERT INTO users(username, password, vote_counter)
+    VALUES($1, $2, $3);`
+    [
+      req.body.username,
+      req.body.password,
+      req.body.vote_counter
+    ]
+  )
+    .then( function () {
+      res.send('insert complete')
+    }) 
+  .catch(function(err) {
+    console.error(err);
+});
+});
+
+app.get('/api/v1/users', (req, res) => {
+  client.query(`SELECT * FROM users;`)
+  // .then(console.log(results))
+  .then(results => res.send(results.rows))
+  .catch(console.error);
+}); 
 
 //API ENDPOINTS
 // app.get('/api endpoint', (req, res) => res.send(TOKEN === parseInt(req.query.token)))
