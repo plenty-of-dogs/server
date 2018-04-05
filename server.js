@@ -64,10 +64,24 @@ app.post('/api/v1/users', (req, res) => {
 app.get('/api/v1/users', (req, res) => {
   client.query(`SELECT * FROM users;`)
   // .then(console.log(results))
-  .then(results => res.send(results))
+  .then(results => res.send(results.rows))
   .catch(console.error);
 }); 
 
+app.put('/api/v1/users/:id', (req, res) => {
+  client.query(
+    `UPDATE users
+    SET vote_counter=$1
+    WHERE user_id=$2`,
+    [req.body.vote_counter, req.params.id]
+  )
+  .then( function () {
+    res.send('update complete')
+  })
+  .catch(function(err) {
+    console.error(err);
+  })
+})
 
 //API ENDPOINTS
 // app.get('/api endpoint', (req, res) => res.send(TOKEN === parseInt(req.query.token)))
