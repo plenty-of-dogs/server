@@ -64,9 +64,10 @@ app.post('/api/v1/users', (req, res) => {
 app.get('/api/v1/users', (req, res) => {
   client.query(`SELECT * FROM users;`)
   // .then(console.log(results))
-  .then(results => res.send(results.rows))
+  .then(results => res.send(results))
   .catch(console.error);
 }); 
+
 
 //API ENDPOINTS
 // app.get('/api endpoint', (req, res) => res.send(TOKEN === parseInt(req.query.token)))
