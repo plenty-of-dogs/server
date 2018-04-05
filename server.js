@@ -66,7 +66,7 @@ app.get('/api/v1/users', (req, res) => {
   // .then(console.log(results))
   .then(results => res.send(results.rows))
   .catch(console.error);
-});
+}); 
 
 //API ENDPOINTS
 // app.get('/api endpoint', (req, res) => res.send(TOKEN === parseInt(req.query.token)))
